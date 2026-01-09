@@ -63,12 +63,12 @@ recognition.onresult = (event) => {
 
   if (weatherMatch) {
     const city = weatherMatch[2].trim();
-    fetchWeather(city); // ✅ REAL WEATHER (Mumbai, Delhi, etc.)
+    fetchWeather(city); 
     speak(`Fetching weather for ${city}`);
-    return; // ⛔ dummy AI yahin stop
+    return; 
   }
 
-  // 🔁 Normal dummy AI flow
+  // Normal dummy AI flow
   setTimeout(() => {
     const reply = getDummyReply(userText);
     addAIMessage(reply);
@@ -93,15 +93,19 @@ recognition.onerror = (e) => {
 // =============================== USER MESSAGE UI ===============================
 function addUserMessage(text) {
   const msg = document.createElement("div");
-  msg.className = "flex justify-end gap-3";
+  msg.className = "flex items-start gap-3 justify-end";
 
   msg.innerHTML = `
-    <div class="flex flex-col items-end max-w-[80%]">
-      <div class="bg-[#28273a] p-4 rounded-2xl rounded-tr-none text-sm text-white">
+    <div class="flex flex-col max-w-[80%] items-end">
+      <div class="bg-slate-800 text-white px-4 py-3 rounded-2xl rounded-tr-none text-sm">
         ${text}
       </div>
     </div>
-    <div class="h-8 w-8 rounded-full bg-slate-700"></div>
+
+    <!-- USER ICON -->
+    <div class="h-8 w-8 rounded-full bg-slate-800 flex items-center justify-center shrink-0">
+      <i class="ri-user-3-fill text-white text-sm"></i>
+    </div>
   `;
 
   chatArea.appendChild(msg);
@@ -114,18 +118,14 @@ function addAIMessage(text) {
   msg.className = "flex items-start gap-3";
 
   msg.innerHTML = `
-    <div class="h-8 w-8 rounded-full bg-gradient-to-br from-primary to-purple-600 flex items-center justify-center">
-      <span class="material-symbols-outlined text-white" style="font-size:16px">
-        smart_toy
-      </span>
+    <!-- AI ICON -->
+    <div class="h-8 w-8 rounded-full bg-gradient-to-br from-primary to-purple-600 flex items-center justify-center shrink-0">
+      <i class="ri-robot-2-fill text-white text-sm"></i>
     </div>
 
     <div class="flex flex-col max-w-[80%]">
       <div
-        class="bg-primary/10 border border-primary/20
-              p-4 rounded-2xl rounded-tl-none
-              text-sm
-              text-slate-800 dark:text-slate-200">
+        class="bg-primary/10 border border-primary/20 px-4 py-3 rounded-2xl rounded-tl-none text-sm text-slate-800 dark:text-slate-200">
         ${text}
       </div>
     </div>
@@ -134,6 +134,7 @@ function addAIMessage(text) {
   chatArea.appendChild(msg);
   scrollChat();
 }
+
 // ============== AUTO SCROLL============
 function scrollChat() {
   chatArea.scrollTop = chatArea.scrollHeight;
